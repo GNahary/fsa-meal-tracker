@@ -1,0 +1,36 @@
+<div class="list-container">
+    <h1>Planned Meals</h1>
+    @if(isLoading){
+        <p>Loading...</p>
+    } @else{
+        <ng-container>       
+            @for(meal of next7Meals; track $index){ 
+                <div class="list-item">
+                @if(meal){
+                    <h3>{{meal.plannedDate.getDate()}}/{{meal.plannedDate.getMonth()+1}}</h3>
+                    <p>{{meal.recipe.name}}</p>
+                    <div class="right-action">
+                        <app-small-x (click)="onDelete(meal._id)"></app-small-x>
+                    </div>
+                } @else{
+                    <h3>{{getFutureDate($index).getDate()}}/{{getFutureDate($index).getMonth()+1}}</h3>
+                    <h3>No meals found for the day</h3>
+                }
+
+
+            </div>
+
+            } @empty {
+                    <h3>No meals were found.</h3>
+            }
+    </ng-container>
+    <a routerLink="recipes">
+        <button class="space-before">+ Add Meal</button>
+    </a>
+    }
+    
+</div>
+
+
+
+
