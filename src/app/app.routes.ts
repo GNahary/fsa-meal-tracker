@@ -9,7 +9,8 @@ export const routes: Routes = [
     {path: '', component: HomepageComponent }, // Home page route
     {path:'ingredients', component: AddIngredientPageComponent},
     {path:'shop', component: ShoppingListPageComponent},
-    {path:'recipes', component: RecipeSearchPageComponent}
+    {path:'recipes', component: RecipeSearchPageComponent},
+    {path:'recipes/:newMealDate', component: RecipeSearchPageComponent}
 ];
 
 

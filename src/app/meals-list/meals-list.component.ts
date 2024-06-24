@@ -14,12 +14,13 @@ import { RouterModule } from '@angular/router';
 export class MealsListComponent {
 
   @Input() isLoading:boolean = true;
-  @Input() meals:Meal[] = [];
+  @Input() meals:(Meal)[] = [];
   @Output() deleteMeal = new EventEmitter<string>();
   next7Meals:(Meal | undefined)[] = this.getNext7Meals();
 
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     if (changes['meals'] && this.meals) {
 
       this.meals = this.meals.map(meal => ({
@@ -30,6 +31,9 @@ export class MealsListComponent {
       this.next7Meals = this.getNext7Meals();
     }
   }
+
+
+
 
   onDelete(mealId: string) {
     this.deleteMeal.emit(mealId);

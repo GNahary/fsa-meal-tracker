@@ -31,6 +31,10 @@ export class MealsService {
     return this.http.delete<Meal[]>(`http://localhost:8080/meals/${mealId}`);  
   }
 
+  addMeal(recipeId: string, plannedDate:string): Observable<MealRaw>{
+    return this.http.post<MealRaw>(`http://localhost:8080/meals`,{recipeId:recipeId,plannedDate:new Date(plannedDate)});  
+  }
+
 }
 
 

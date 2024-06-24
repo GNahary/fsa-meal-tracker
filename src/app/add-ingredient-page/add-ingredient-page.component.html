@@ -1,4 +1,17 @@
-<p>Nothing to see here...</p>
+<div class="page">
+    <app-back-button></app-back-button>
+    <div class="centered-container">
+        <h1>Add Ingredient</h1>
+        <input type="text" placeholder="Enter ingredient name" class="space-after space-before full-width" [(ngModel)]="ingredient_name" name="ingredient_name">
+        <input type="number" class="space-before full-width" [(ngModel)]="amount" name="ingredient_name">
+        <select [(ngModel)]="units"  class="space-before full-width">
+            @for (unit of unitOptions; track $index) {
+                <option value={{unit}}>{{unit}}</option>
+            }
+        </select>
+        <button class="space-before full-width" (click)="addIngredient()">Add</button>
+    </div>
+</div>
 
 
 <button routerLink="" >Go Back</button>

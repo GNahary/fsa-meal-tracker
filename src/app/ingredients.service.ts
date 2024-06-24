@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Ingredient } from './types';
@@ -16,5 +16,9 @@ export class IngredientsService {
 
   deleteIngredient(ingredientId:string): Observable<Ingredient[]>{
     return this.http.delete<Ingredient[]>(`http://localhost:8080/ingredients/${ingredientId}`);  
+  }
+
+  addIngredient(ingredient: Ingredient): Observable<Ingredient>{
+    return this.http.post<Ingredient>(`http://localhost:8080/ingredients`,ingredient);  
   }
 }

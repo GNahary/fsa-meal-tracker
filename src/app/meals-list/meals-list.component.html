@@ -15,18 +15,17 @@
                 } @else{
                     <h3>{{getFutureDate($index).getDate()}}/{{getFutureDate($index).getMonth()+1}}</h3>
                     <h3>No meals found for the day</h3>
+                    <a routerLink="recipes/{{getFutureDate($index)}}">
+                        <button class="space-before">+ Add Meal</button>
+                    </a>
                 }
-
-
             </div>
 
             } @empty {
                     <h3>No meals were found.</h3>
             }
     </ng-container>
-    <a routerLink="recipes">
-        <button class="space-before">+ Add Meal</button>
-    </a>
+    
     }
     
 </div>

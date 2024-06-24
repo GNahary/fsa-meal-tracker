@@ -1,1 +1,13 @@
-<p>recipe-search-page works!</p>
+<div class="page">
+    <app-back-button></app-back-button>
+    <div class="centered-container">
+        <h1>Add Ingredient</h1>
+        @for (recipe of availableRecipes; track $index) {
+            <h3>{{recipe.name}}</h3>
+            <button (click)="addMeal(recipe.id)">Add</button>
+        }
+    </div>
+</div>
+
+
+<button routerLink="" >Go Back</button>
