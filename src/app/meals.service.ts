@@ -28,7 +28,20 @@ export class MealsService {
   }
 
   deleteMeal(mealId:string): Observable<Meal[]>{
-    return this.http.delete<Meal[]>(`http://localhost:8080/meals/${mealId}`);  
+    return this.http.delete<MealRaw[]>(`http://localhost:8080/meals/${mealId}`).pipe(
+      mergeMap(mealsFromAPI => 
+        // Map each MealFromAPI to an Observable that fetches the corresponding Recipe
+        forkJoin(mealsFromAPI.map(mealFromAPI =>
+          this.http.get<Recipe>(`http://localhost:8080/recipes/${mealFromAPI.recipeId}`).pipe(
+            map(recipe => ({
+              _id: mealFromAPI._id,
+              recipe: recipe,
+              plannedDate: mealFromAPI.plannedDate
+            }))
+          )
+        ))
+      )
+    );  
   }
 
   addMeal(recipeId: string, plannedDate:string): Observable<MealRaw>{

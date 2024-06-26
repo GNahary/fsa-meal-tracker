@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { Meal } from '../types';
 import { SmallXComponent } from "../small-x/small-x.component";
 import { RouterModule } from '@angular/router';
-
+import { MealsService } from '../meals.service';
 
 @Component({
     selector: 'app-meals-list',
@@ -18,9 +18,9 @@ export class MealsListComponent {
   @Output() deleteMeal = new EventEmitter<string>();
   next7Meals:(Meal | undefined)[] = this.getNext7Meals();
 
+  constructor(private mealsService:MealsService){};
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes['meals'] && this.meals) {
 
       this.meals = this.meals.map(meal => ({
@@ -29,10 +29,9 @@ export class MealsListComponent {
       }));
 
       this.next7Meals = this.getNext7Meals();
+
     }
   }
-
-
 
 
   onDelete(mealId: string) {
@@ -42,7 +41,7 @@ export class MealsListComponent {
   private getNext7Meals():(Meal | undefined)[]{
     const today = new Date();
     const nextWeekPlannedMeals = this.meals
-    .filter(meal=>{ return meal.plannedDate.getDate() >= today.getDate() && meal.plannedDate.getDate() <= this.getFutureDate(6).getDate()})
+    .filter(meal=>{ return meal.plannedDate >= today && meal.plannedDate <= this.getFutureDate(6)})
     .sort((mealA, mealB) => mealA.plannedDate.getDate() - mealB.plannedDate.getDate());
 
     const nextWeekMeals = Array<(Meal | undefined)>(7);

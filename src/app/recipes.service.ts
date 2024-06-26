@@ -13,4 +13,8 @@ export class RecipesService {
   getRecipes():Observable<Recipe[]>{
     return this.http.get<Recipe[]>("http://localhost:8080/recipes");  
   }
+
+  getRecipe(recipeId:string):Observable<Recipe>{
+    return this.http.get<Recipe>(`http://localhost:8080/recipes/${recipeId}`);  
+  }
 }
