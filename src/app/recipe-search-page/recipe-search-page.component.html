@@ -1,13 +1,22 @@
 <div class="page">
-    <app-back-button></app-back-button>
-    <div class="centered-container">
-        <h1>Add Ingredient</h1>
-        @for (recipe of availableRecipes; track $index) {
-            <h3>{{recipe.name}}</h3>
-            <button (click)="addMeal(recipe.id)">Add</button>
-        }
-    </div>
+	<app-back-button></app-back-button>
+	<div class="centered-container">
+		<h1>Add Meal to Plan</h1>
+		<input
+			type="text"
+			class="full-width space-before space-after"
+			placeholder="Enter keyword here"
+			[(ngModel)]="searchInputValue" 
+            (keyup.enter)="onSearchClicked()"/>
+		<button
+			class="full-width space-after"
+			(click)="onSearchClicked()">Search</button>
+		<app-recipe-search-results-list
+			[recipes]="searchResults"
+			[ingredients]="ingredients"
+		></app-recipe-search-results-list>
+	</div>
 </div>
 
-
 <button routerLink="" >Go Back</button>
+

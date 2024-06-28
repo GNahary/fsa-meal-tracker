@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealsService } from '../meals.service';
 import { RecipesService } from '../recipes.service';
+import { IngredientsService } from '../ingredients.service';
 import { BackButtonComponent } from "../back-button/back-button.component";
-import { Recipe } from '../types';
+import { Ingredient, Recipe } from '../types';
 import { RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RecipeSearchResultsListComponent } from "../recipe-search-results-list/recipe-search-results-list.component";
 
 
 @Component({
@@ -13,13 +16,17 @@ import { Location } from '@angular/common';
     standalone: true,
     templateUrl: './recipe-search-page.component.html',
     styleUrl: './recipe-search-page.component.css',
-    imports: [BackButtonComponent, RouterModule]
+    imports: [BackButtonComponent, RouterModule, FormsModule, RecipeSearchResultsListComponent]
 })
 export class RecipeSearchPageComponent {
   newMealDate: string = "";
   availableRecipes: Recipe[]=[];
 
-  constructor(private route: ActivatedRoute, private programmaticRouter: Router, private mealsService: MealsService, private recipesService:RecipesService, private location: Location){
+  searchInputValue:string = '';
+  ingredients:Ingredient[] = [];
+  searchResults: Recipe[]=[];
+
+  constructor(private route: ActivatedRoute, private ingredientsService: IngredientsService, private mealsService: MealsService, private recipesService:RecipesService, private location: Location){
   }
 
   ngOnInit(): void {
@@ -27,13 +34,15 @@ export class RecipeSearchPageComponent {
     this.recipesService.getRecipes().subscribe(response=>{
       this.availableRecipes = response;
     });
+
+
+    this.ingredientsService.getIngredients().subscribe(ingredients=>this.ingredients = ingredients);
   }
 
-  addMeal(recipeId:string){
-    this.mealsService.addMeal(recipeId,this.newMealDate).subscribe(response=>{
-      console.log("Great success! Added " + response);
+  onSearchClicked(){
+    this.recipesService.getRecipes().subscribe(response=>{
+      this.searchResults = response.filter(availableRecipe=>availableRecipe.name.toLowerCase().includes(this.searchInputValue.toLowerCase()));
+      console.log("Relevent recipes are " + this.searchResults.map(recipe=>recipe.name));
     });
-    this.location.back();
   }
-
 }

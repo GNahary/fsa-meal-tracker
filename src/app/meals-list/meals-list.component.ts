@@ -40,6 +40,7 @@ export class MealsListComponent {
 
   private getNext7Meals():(Meal | undefined)[]{
     const today = new Date();
+    today.setHours(0,0,0,0);
     const nextWeekPlannedMeals = this.meals
     .filter(meal=>{ return meal.plannedDate >= today && meal.plannedDate <= this.getFutureDate(6)})
     .sort((mealA, mealB) => mealA.plannedDate.getDate() - mealB.plannedDate.getDate());

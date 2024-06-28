@@ -14,10 +14,12 @@
                     </div>
                 } @else{
                     <h3>{{getFutureDate($index).getDate()}}/{{getFutureDate($index).getMonth()+1}}</h3>
-                    <h3>No meals found for the day</h3>
-                    <a routerLink="recipes/{{getFutureDate($index)}}">
-                        <button class="space-before">+ Add Meal</button>
-                    </a>
+				    <p>No meal planned</p>
+				    <div class="right-action">
+                        <a routerLink="/recipes/{{getFutureDate($index)}}">
+                            <button>Add</button>
+                        </a>
+				    </div>
                 }
             </div>
 
