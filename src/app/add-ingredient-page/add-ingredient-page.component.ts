@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BackButtonComponent } from "../back-button/back-button.component";
 import { FormsModule } from '@angular/forms';
 import { IngredientsService } from '../ingredients.service';
@@ -10,7 +10,7 @@ import { IngredientsService } from '../ingredients.service';
     standalone: true,
     templateUrl: './add-ingredient-page.component.html',
     styleUrl: './add-ingredient-page.component.css',
-    imports: [RouterModule, BackButtonComponent, FormsModule]
+    imports: [BackButtonComponent, FormsModule]
 })
 export class AddIngredientPageComponent {
 
@@ -19,12 +19,13 @@ export class AddIngredientPageComponent {
   units: string = '';
   unitOptions =['lb', 'cups', 'tablespoons', 'teaspoons', 'count', 'sticks']
 
-  constructor(private ingredientsService:IngredientsService){}
+  constructor(private ingredientsService:IngredientsService, private router:Router, private activeRout:ActivatedRoute){}
 
   addIngredient() {
     console.log(this.ingredient_name +" "+this.amount+" "+this.units);
     this.ingredientsService.addIngredient({name: this.ingredient_name, amount: this.amount, units: this.units}).subscribe(response=>{
       console.log("Great success! Added " + response);
+      this.router.navigateByUrl('/');
     });
   }
 

@@ -4,9 +4,8 @@ import { IngredientsListComponent } from "../ingredients-list/ingredients-list.c
 import { MealsService } from '../meals.service';
 import { IngredientsService } from '../ingredients.service';
 import { Ingredient, Meal } from '../types';
-import { error } from 'console';
-import e from 'express';
-
+import { Router, RouterModule } from '@angular/router';
+import { ShoppingListPageComponent } from "../shopping-list-page/shopping-list-page.component";
 
 
 @Component({
@@ -14,7 +13,7 @@ import e from 'express';
     standalone: true,
     templateUrl: './homepage.component.html',
     styleUrl: './homepage.component.css',
-    imports: [MealsListComponent, IngredientsListComponent]
+    imports: [MealsListComponent, IngredientsListComponent, RouterModule, ShoppingListPageComponent]
 })
 export class HomepageComponent implements OnInit{
 
@@ -25,7 +24,7 @@ export class HomepageComponent implements OnInit{
   ingredients:Ingredient[] = [];
 
 
-  constructor(private mealsService: MealsService, private ingredientsService:IngredientsService){}
+  constructor(private mealsService: MealsService, private ingredientsService:IngredientsService, private router: Router){}
 
   ngOnInit(): void {
        this.mealsService.getMeals().subscribe(response=>{
@@ -51,9 +50,8 @@ export class HomepageComponent implements OnInit{
       this.ingredientsService.deleteIngredient(ingregientId).subscribe(updatedIngredients=>{
         this.ingredients = updatedIngredients;
       }
-    ,(error)=>{console.log(error)}
-    
-    )
-      
-    }
+    ,(error)=>{console.log(error)})
+  }
+
+
 }
