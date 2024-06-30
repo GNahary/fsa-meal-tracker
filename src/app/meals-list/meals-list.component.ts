@@ -1,24 +1,25 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { Meal } from '../types';
 import { SmallXComponent } from "../small-x/small-x.component";
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MealsService } from '../meals.service';
 
+
 @Component({
-    selector: 'app-meals-list',
-    standalone: true,
-    templateUrl: './meals-list.component.html',
-    styleUrl: './meals-list.component.css',
-    imports: [SmallXComponent, RouterModule]
+  selector: 'app-meals-list',
+  standalone: true,
+  templateUrl: './meals-list.component.html',
+  styleUrl: './meals-list.component.css',
+  imports: [SmallXComponent, RouterModule]
 })
 export class MealsListComponent {
 
-  @Input() isLoading:boolean = true;
-  @Input() meals:(Meal)[] = [];
+  @Input() isLoading: boolean = true;
+  @Input() meals: (Meal)[] = [];
   @Output() deleteMeal = new EventEmitter<string>();
-  next7Meals:(Meal | undefined)[] = this.getNext7Meals();
+  next7Meals: (Meal | undefined)[] = this.getNext7Meals();
 
-  constructor(private mealsService:MealsService){};
+  constructor(private mealsService: MealsService, private router: Router) { };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['meals'] && this.meals) {
@@ -33,29 +34,15 @@ export class MealsListComponent {
     }
   }
 
-
   onDelete(mealId: string) {
     this.deleteMeal.emit(mealId);
   }
 
-  private getNext7Meals():(Meal | undefined)[]{
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    const nextWeekPlannedMeals = this.meals
-    .filter(meal=>{ return meal.plannedDate >= today && meal.plannedDate <= this.getFutureDate(6)})
-    .sort((mealA, mealB) => mealA.plannedDate.getDate() - mealB.plannedDate.getDate());
-
-    const nextWeekMeals = Array<(Meal | undefined)>(7);
-    for (let index = 0; index < 7; index++) {
-      let date = this.getFutureDate(index).getDate();
-      nextWeekMeals[index] = nextWeekPlannedMeals.find(meal=>meal.plannedDate.getDate()===date);
-    }
-
-    return nextWeekMeals;
+  private getNext7Meals(): (Meal | undefined)[] {
+    return this.mealsService.getNext7Meals(this.meals);
   }
 
-
-  getFutureDate(offset:number):Date{
+  getFutureDate(offset: number): Date {
     let today = new Date();
     return new Date(today.getTime() + (offset * 24 * 60 * 60 * 1000));
   }

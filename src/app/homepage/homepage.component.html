@@ -1,22 +1,17 @@
 <div class="page-container">
-    
-    
+
+
     <div class="column">
-        <app-meals-list
-        [isLoading]="isLoadingMeals"
-        [meals]="meals"
-        (deleteMeal)="onDeleteMeal($event)"
-        ></app-meals-list>
+        <app-meals-list [isLoading]="isLoadingMeals" [meals]="meals"
+            (deleteMeal)="onDeleteMeal($event)"></app-meals-list>
     </div>
     <div class="column">
-        <app-ingredients-list
-        [isLoading]="isLoadingIngredients"
-        [ingredients]="ingredients"
-        (deleteIngredient)="onDeleteIngredient($event)"></app-ingredients-list>
+        <app-ingredients-list [isLoading]="isLoadingIngredients" [ingredients]="ingredients"
+            (deleteIngredient)="onDeleteIngredient($event)"></app-ingredients-list>
 
-        <a routerLink="/shop">
-            <button class="shopping-list-button list-container full-width">Generate Shopping List</button>
-        </a>
-        
+        <button class="shopping-list-button list-container full-width" (click)="viewMeals()">Generate Shopping
+            List</button>
+
+
     </div>
 </div>

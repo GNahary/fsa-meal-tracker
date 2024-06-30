@@ -5,53 +5,54 @@ import { MealsService } from '../meals.service';
 import { IngredientsService } from '../ingredients.service';
 import { Ingredient, Meal } from '../types';
 import { Router, RouterModule } from '@angular/router';
-import { ShoppingListPageComponent } from "../shopping-list-page/shopping-list-page.component";
-
 
 @Component({
-    selector: 'app-homepage',
-    standalone: true,
-    templateUrl: './homepage.component.html',
-    styleUrl: './homepage.component.css',
-    imports: [MealsListComponent, IngredientsListComponent, RouterModule, ShoppingListPageComponent]
+  selector: 'app-homepage',
+  standalone: true,
+  templateUrl: './homepage.component.html',
+  styleUrl: './homepage.component.css',
+  imports: [MealsListComponent, IngredientsListComponent, RouterModule]
 })
-export class HomepageComponent implements OnInit{
+export class HomepageComponent implements OnInit {
 
-  isLoadingMeals:boolean = true;
-  meals:Meal[] = [];
+  isLoadingMeals: boolean = true;
+  meals: Meal[] = [];
 
-  isLoadingIngredients:boolean = true;
-  ingredients:Ingredient[] = [];
+  isLoadingIngredients: boolean = true;
+  ingredients: Ingredient[] = [];
 
 
-  constructor(private mealsService: MealsService, private ingredientsService:IngredientsService, private router: Router){}
+  constructor(private mealsService: MealsService, private ingredientsService: IngredientsService, private router: Router) { }
 
   ngOnInit(): void {
-       this.mealsService.getMeals().subscribe(response=>{
-        this.meals = response;
-        this.isLoadingMeals = false;
-      });
+    this.mealsService.getMeals().subscribe(response => {
+      this.meals = response;
+      this.isLoadingMeals = false;
+    });
 
-      this.ingredientsService.getIngredients().subscribe(response=>{
-        this.ingredients = response;
-        this.isLoadingIngredients = false;
-      });
-      
+    this.ingredientsService.getIngredients().subscribe(response => {
+      this.ingredients = response;
+      this.isLoadingIngredients = false;
+    });
+
   }
 
 
   onDeleteMeal(mealId: string) {
-    this.mealsService.deleteMeal(mealId).subscribe(updatedMeals=>{
+    this.mealsService.deleteMeal(mealId).subscribe(updatedMeals => {
       this.meals = updatedMeals;
     });
   }
 
-    onDeleteIngredient(ingregientId: string) {
-      this.ingredientsService.deleteIngredient(ingregientId).subscribe(updatedIngredients=>{
-        this.ingredients = updatedIngredients;
-      }
-    ,(error)=>{console.log(error)})
+  onDeleteIngredient(ingregientId: string) {
+    this.ingredientsService.deleteIngredient(ingregientId).subscribe(updatedIngredients => {
+      this.ingredients = updatedIngredients;
+    }
+      , (error) => { console.log(error) })
   }
 
+  viewMeals(): void {
+    this.router.navigate(['/shop'], { state: { meals: this.meals, ingredients: this.ingredients } });
+  }
 
 }
